@@ -1,0 +1,50 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#button {
+    background-color: #0a0000;
+    color: #fff;
+    border-radius: 5px;
+    width: 100px;
+    height: 50px;
+    font-size: medium;
+  }
+  
+  .profile-image-pic{
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+  }
+
+h5 {
+    padding: 5px;
+    color: black;
+    
+}
+
+  
+.card {
+    
+    display: flex;
+    justify-content: center;
+}
+  
+  .cardbody-color{
+    background-color: #a2c6f0;
+    border-radius: 15px;
+  }
+  
+  a{
+    text-decoration: none;
+  }
+
+  h2 {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    color: black;
+  }
+

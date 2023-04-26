@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% load static %}
+	<title>Home</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static 'css/card.css' %}">
+</head>
+<body>
+<!-- nav container -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img src="{{user.doctor.profile.url}}" alt="" height="40" width ="35">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'doctor-page' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}">Signup</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            My Profile
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'update-profile' %}">Update profile</a></li>
+            <li><a class="dropdown-item" href="{% url 'draft' %}">Draft Post</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- end nav container -->
+<br>
+<div class="wrapper">
+	<div class="header">Draft Posts :</div>
+
+  {% if draft %}
+	<div class="cards_wrap">
+    {% for item in draft %}
+		<div class="card_item">
+			<div class="card_inner">
+				<img src="{{ item.image.url }}">
+				<div class="flim"><b>{{ item.title}}</b></div>
+        <p style="margin-block-start: 0em; margin-block-end: 0em">Summary :</p>
+				<div class="film">{{ item.summary | truncatewords:15}}</div>
+			</div>
+		</div>
+    {% endfor %}
+	</div>
+</div> 
+
+{% else %}
+<h3 style="text-align:center;">No Post available in this category.</h3>
+{% endif %}
+
+<!-- form -->
+
+<div class="popup-container">
+  <div class="popup-content">
+    <h2>Create Blog </h2>
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="title">Title:</label>
+        {{form.title}} 
+      </div>
+      <label for="category" id = 'ct'> Category</label>
+      <div class="form-check">
+        {{form.category}} 
+      </div>
+      <div class="form-group">
+        <label for="summary">Summary:</label>
+        {{form.summary}} 
+      </div>
+      <div class="form-group">
+        <label for="content">Content:</label>
+        {{form.content}} 
+      </div>
+      <div class="mb-3">
+        <label for="image-upload" class="form-label" >Upload Image:</label>
+        {{form.image}} 
+      </div>
+      <div class="mb-3">
+        <label class="form-label" >Status:</label>
+        <div class="form-check">
+          {{form.status}}
+        </div>
+      </div><br>
+      <button type="submit" name="submit" class = "btn btn-primary">Submit</button>
+    </form>
+    <button class="close-btn">&times;</button>
+  </div>
+</div>
+<button class="open-btn">
+    <i class="fa fa-upload"></i>
+</button>
+
+<!-- form end -->
+
+<style>
+  
+.popup-container {
+  padding-top : 100px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  overflow:auto;
+}
+
+.popup-content {
+  overflow: auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  animation-name: popup;
+  animation-duration: 0.5s
+}
+
+@keyframes popup {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.open-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 1;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  font-family:"Barlow Semi Condensed", sans-serif;
+}
+
+#ct{
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.form-group input[type="file"] {
+  border: none;
+  padding: 0;
+}
+
+.form-group input[type="submit"] {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.open-btn:hover {
+  background-color: darkred;
+}
+
+.open-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<script>
+const openBtn = document.querySelector('.open-btn');
+const popupContainer = document.querySelector('.popup-container');
+const closeBtn = document.querySelector('.close-btn');
+
+openBtn.addEventListener('click', () => {
+  popupContainer.style.display = 'flex';
+});
+
+closeBtn.addEventListener('click', () => {
+  popupContainer.style.display = 'none';
+});
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
+</body>
+</html>
