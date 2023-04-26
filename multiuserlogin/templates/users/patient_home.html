@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% load static %}
+	<title>Home</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<!-- nav container -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img src="data:image/png;base64,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" alt="..." height="36">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'patient-page' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}">Signup</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            My Profile
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Update profile</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- end nav container -->
+
+<h2 style="text-align:center;"> <b>Mental Health</b></h2>
+{% if mental %}
+<div class="container1">
+{% for item in mental %}
+<div class="box">
+  <img src="{{ item.image.url }}" class = "image"/>
+  <h3 class = "title">{{ item.title}}</h3>
+  <p class = "content">
+    {{ item.summary | truncatewords:15}}
+  </p>
+  </div>
+{% endfor %}
+</div>
+{% else %}
+<h3 style="text-align:center;">No Post available in this category.</h3>
+{% endif %}
+
+
+<h2 style="text-align:center;"> <b>Heart Disease</b></h2>
+{% if  heart %}
+<div class="container1">
+{% for item in heart %}
+<div class="box">
+  <img src="{{ item.image.url }}" class = "image"/>
+  <h3 class = "title">{{ item.title}}</h3>
+  <p class = "content">
+    {{ item.summary | truncatewords:15}}
+  </p>
+  </div>
+{% endfor %}
+</div>
+{% else %}
+<h3 style="text-align:center;">No Post available in this category.</h3>
+{% endif %}
+
+<h2 style="text-align:center;"><b>Covid - 19</b></h2>
+  {% if covid %}
+  <div class="container1">
+  {% for item in covid %}
+  <div class="box">
+    <img src="{{ item.image.url }}" class = "image"/>
+    <h3 class = "title">{{ item.title}}</h3>
+    <p class = "content">
+      {{ item.summary | truncatewords:15}}...
+    </p>
+    </div>
+  {% endfor %}
+  </div>
+  {% else %}
+  <h3 style="text-align:center;">No Post available in this category.</h3>
+  {% endif %}
+
+
+
+<h2 style="text-align:center;"><b>Immunization <b></h2>
+{% if  immunization %}
+<div class="container1">
+{% for item in immunization %}
+<div class="box">
+  <img src="{{ item.image.url }}" class = "image"/>
+  <h3 class = "title">{{ item.title}}</h3>
+  <p class = "content">
+    {{ item.summary | truncatewords:15}}
+  </p>
+  </div>
+{% endfor %}
+</div>
+{% else %}
+<h3 style="text-align:center;">No Post available in this category.</h3>
+{% endif %}
+
+<style>
+
+  body{
+    background-color: #fff;
+    font-family: 'Roboto', sans-serif;
+  }
+  .container1{
+    display: flex;
+    width: 920px;
+    height: auto;
+    margin: 30px auto;
+  }
+  .box{
+    width: 32%;
+    height: auto;
+    border: 1px solid #ccc;
+    margin-right: 1%;
+    background: white;
+    border-radius: 10px;
+    transition: 0.9;
+  }
+  .box:hover{
+    box-shadow: 0 0 11px rgba(33, 33, 33, 0.5);
+    cursor: pointer;
+  }
+  .image{
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  .title{
+    text-align: center;
+    color: rgb(104, 92, 92);
+  }
+  .content{
+  text-align: center;
+  color: rgb(104, 92, 92);
+  }
+  .content{
+    font-size: 15px;
+    padding: 0 5px;
+  }
+  @media (max-width: 800px){
+    .container{
+        width: 100%;
+    }
+  }
+  @media (max-width: 600px){
+    .container{
+        width: 85%;
+        display: block;
+    }
+    .box{
+        width: 100%;
+        margin-bottom: 4%;
+    }
+  }
+  
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
+</body>
+</html>
