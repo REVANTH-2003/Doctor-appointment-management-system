@@ -61,7 +61,7 @@ def patient_home(request):
     option1 = Blog.objects.filter(status='post',category = "Mental Health")
     option2 = Blog.objects.filter(status='post',category = "Heart Disease")
     option3 = Blog.objects.filter(status='post',category = "Covid19")
-    option4 = Blog.objects.filter(status='post',category = "Immunization'")
+    option4 = Blog.objects.filter(status='post',category = "Immunization")
     return render(request, 'users/patient_home.html',{'mental':option1,'heart':option2,'covid':option3,'immunization':option4})
 
 @login_required
