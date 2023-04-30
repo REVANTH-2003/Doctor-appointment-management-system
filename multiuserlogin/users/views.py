@@ -1,12 +1,25 @@
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView
-from .models import User,Blog,Doctor,Patient
-from .forms import DoctorSignUpForm, PatientSignUpForm, LoginForm, BlogPostForm,UpdateForm
+from .models import User,Blog,Doctor,Patient,AppointmentDetail
+from .forms import DoctorSignUpForm, PatientSignUpForm, LoginForm, BlogPostForm,UpdateForm,AppointmentForm
 from django.contrib.auth import login
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from .decorators import patient_required, doctor_required
+import os
+import pickle
+from datetime import datetime, timedelta
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from google.auth.transport.requests import Request
+
+
+SCOPES = ['https://www.googleapis.com/auth/calendar']
+CLIENT_SECRET_FILE = './templates/users/client_id.json'
+TOKEN_FILE = 'token.pickle'
 
 
 class PatientSignUpView(CreateView):
@@ -134,4 +147,116 @@ def update_detail(request):
     return render(request, 'users/updatedetails.html', {'user':request.user,'form':forms})
 
 
+@login_required
+@patient_required
+def doctor_profile(request):
+    doctors = User.objects.filter(is_doctor = True)
+    return render(request, 'users/doctors_details.html', {'doctor':doctors} )
 
+
+@login_required
+@patient_required
+def appointment(request,dusername):
+    forms = AppointmentForm(initial={'doctor_username':dusername,})
+    forms.doctor_username = dusername
+
+    if request.method == 'POST': 
+        form = AppointmentForm(request.POST, request.FILES) 
+        if form.is_valid():
+            user = request.user
+            entry = AppointmentDetail()  
+            entry.doctor_username = dusername
+            entry.patient_username = user.username
+            entry.required_speciality = form.cleaned_data['speciality']
+            entry.appointmentDate = form.cleaned_data['appointmantDate']
+
+            dt_str = form.cleaned_data['appointmantDate'].strftime("%Y-%m-%d")
+
+            date_obj = datetime.strptime(dt_str, '%Y-%m-%d')
+            new_date_string = date_obj.strftime('%Y-%m-%d')
+
+            entry.start_time = form.cleaned_data['startTime']
+
+            time_obj = datetime.strptime( new_date_string +" "+ form.cleaned_data['startTime'].strftime("%H:%M"), "%Y-%m-%d %H:%M")
+            new_time_obj = time_obj + timedelta(minutes=45)
+            new_time = new_time_obj.strftime("%H:%M")
+            entry.end_time = new_time
+            entry.appointmantStatus= False
+            entry.save()
+            return redirect('doctor-profile')
+        
+    return render(request, 'users/appointmentform.html', {'form': forms})
+
+
+@login_required
+@doctor_required
+def appnotify(request):
+    datas = AppointmentDetail.objects.filter(doctor_username = request.user.username, appointmentStatus = False)
+    return render(request, 'users/doctor_confirmation.html', {'data': datas,})
+
+
+@login_required
+@doctor_required
+def confirm(request,pusername,date):
+    datas = AppointmentDetail.objects.get(patient_username = pusername, appointmentDate=date, appointmentStatus=False)
+    datas.appointmentStatus = True
+    datas.save()
+
+    def get_credentials():
+        flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRET_FILE, SCOPES)
+        credentials = None
+        if os.path.exists(TOKEN_FILE):
+            with open(TOKEN_FILE, 'rb') as token:
+                credentials = pickle.load(token)
+        if not credentials or not credentials.valid:
+            if credentials and credentials.expired and credentials.refresh_token:
+                credentials.refresh(Request())
+            else:
+                flow.run_local_server(port=0)
+                credentials = flow.credentials
+            with open(TOKEN_FILE, 'wb') as token:
+                pickle.dump(credentials, token)
+        return credentials
+    
+    
+    credentials = get_credentials()
+    service = build('calendar', 'v3', credentials=credentials)
+
+    datetime_obj1 = datetime.combine(datas.appointmentDate, datas.start_time)
+    datetime_obj2= datetime.combine(datas.appointmentDate, datas.end_time)
+    
+
+    event = {
+            'summary': 'Appoinment Event',
+            'location': 'Theni, Tamil Nadu, India',
+            'description': datas.required_speciality,
+            'start': {
+                'dateTime': datetime_obj1.isoformat(),
+                'timeZone': 'Asia/Kolkata',
+            },
+            'end': {
+                'dateTime': datetime_obj2.isoformat(),
+                'timeZone': 'Asia/Kolkata',
+            },
+            'reminders': {
+                'useDefault': True,
+            },
+    }
+
+    event = service.events().insert(calendarId='primary', body=event).execute()
+    print(f'Event created: {event.get("htmlLink")}')
+
+    return redirect('appointment-notification')
+
+
+@login_required
+@patient_required
+def appconfirm(request):
+    datas = AppointmentDetail.objects.filter(patient_username = request.user.username, appointmentStatus = True)
+    return render(request, 'users/confirmed_appointment.html', {'data': datas} )
+
+
+@login_required
+@doctor_required
+def calender(request):
+    return render(request, 'users/calender.html')

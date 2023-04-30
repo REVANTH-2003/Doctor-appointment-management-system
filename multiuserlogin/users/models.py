@@ -34,5 +34,16 @@ class Blog(models.Model):
     status = models.CharField(max_length=50)
 
 
+class AppointmentDetail(models.Model):
+    doctor_username = models.CharField(max_length=100)
+    patient_username = models.CharField(max_length=100)
+    required_speciality = models.TextField(max_length=200)
+    appointmentDate = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    appointmentStatus = models.BooleanField(default=False)
+
+
+
 
 

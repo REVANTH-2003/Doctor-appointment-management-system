@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% load static %}
+	<title>Confirmed appoinment</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+
+        <div class="wrapper">
+          <div class="navbar">
+        
+            <div class="navbar_left">
+              <div class="logo">
+                <a href="#">Health Care</a>
+              </div>
+            </div>
+        
+            <div class="navbar_right">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'patient-page' %}">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'doctor-profile' %}">Doctors</a>
+                  </li>
+        
+              <div class="notifications">
+                <div class="icon_wrap"><a href="{% url 'logout' %}" class="far fa-bell"></a></div>
+              </div>
+        
+              <div class="profile">
+                <div class="icon_wrap">
+                  <img src="{{user.patient.profile.url}}" alt="profile_pic">
+                  <span class="name"> </span> 
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+        
+                <div class="profile_dd">
+                  <ul class="profile_ul">
+                    <li class="profile_li"><a class="profile" href="#"><span class="picon"><i class="fas fa-user-alt"></i>
+                        </span>Profile</a>
+                      <a class="btn" href ="{% url 'update-profile' %}">Edit Profile</a>
+                    </li>
+                    <li><a class="address" href="{% url 'draft' %}"><span class="picon"><i class="fas fa-sign-out-alt" aria-hidden="true"></i></span>Signup</a></li>
+                    <li><a class="logout" href="{% url 'logout' %}"><span class="picon"><i class="fas fa-reply" ></i></span>Logout</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+<!-- end nav container -->
+<br>
+<div class="container">
+  <div class="row">
+  <div class="col-md-6 mx-auto">
+<div class="card">
+    <div class="card-header">
+      <h5 class="card-title">Confirmed Appointment</h5>
+    </div>
+
+    {% if data %}
+
+    {% for item in data %}
+    <div class="card-body">
+      <p class="card-text">Doctor Username: {{item.doctor_username }} </p>
+      <p class="card-text">Appointment Date: {{item.appointmentDate }} </p>
+      <p class="card-text">Appointment Start Time: {{item.start_time }} </p>
+      <p class="card-text">Appointment end Time: {{item.end_time }} </p>
+      <p class="card-text">Required Speciality: {{item.required_speciality }} </p>
+    </div>
+    <hr>
+    {% endfor %}
+
+    {% else %}
+    <div class="card-header">
+        <h5 class="card-title">Appointment Not Confirmed</h5>
+    </div>
+    {% endif %}
+  </div>  
+</div>  
+</div>  
+</div>  
+
+
+
+<script>
+const openBtn = document.querySelector('.open-btn');
+const popupContainer = document.querySelector('.popup-container');
+const closeBtn = document.querySelector('.close-btn');
+
+openBtn.addEventListener('click', () => {
+  popupContainer.style.display = 'flex';
+});
+
+closeBtn.addEventListener('click', () => {
+  popupContainer.style.display = 'none';
+});
+
+</script>
+<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			$(".profile .icon_wrap").click(function(){
+			  $(this).parent().toggleClass("active");
+			  $(".notifications").removeClass("active");
+			});
+
+			$(".notifications .icon_wrap").click(function(){
+			  $(this).parent().toggleClass("active");
+			   $(".profile").removeClass("active");
+			});
+
+			$(".show_all .link").click(function(){
+			  $(".notifications").removeClass("active");
+			  $(".popup").show();
+			});
+
+			$(".close").click(function(){
+			  $(".popup").hide();
+			});
+		});
+	</script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
+</body>
+</html>

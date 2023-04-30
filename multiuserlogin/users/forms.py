@@ -77,3 +77,18 @@ class BlogPostForm(forms.Form):
     content = forms.CharField(widget=forms.Textarea(attrs={'id':'content','cols':'50',"class":"form-control",'style':"height:70px"}))
     image = forms.ImageField()
     status = forms.ChoiceField(widget=forms.RadioSelect(attrs={}), choices=(('post','Post'),('draft','Draft')))
+
+
+class BlogPostForm(forms.Form):
+    title = forms.CharField(widget=forms.TextInput(attrs={'id':'title','required':'required'}))
+    category = forms.ChoiceField(widget=forms.RadioSelect(attrs={'required':'required',}), choices=(('Mental Health','Mental Health'),('Heart Disease','Heart Disease'),('Covid19','Covid19'),('Immunization','Immunization')))
+    summary = forms.CharField(widget=forms.Textarea(attrs={'id':'summary','cols':'50',"class":"form-control",'style':"height:70px"}))
+    content = forms.CharField(widget=forms.Textarea(attrs={'id':'content','cols':'50',"class":"form-control",'style':"height:70px"}))
+    image = forms.ImageField()
+    status = forms.ChoiceField(widget=forms.RadioSelect(attrs={}), choices=(('post','Post'),('draft','Draft')))
+
+class AppointmentForm(forms.Form):
+    doctor_username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','id':'username','required':'required'}))
+    speciality = forms.CharField(widget=forms.TextInput(attrs={'id':'speciality','required':'required','class':"form-control"}))
+    appointmantDate = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control','id':'date','type':'date', 'format':"yyyy-mm-dd"})) 
+    startTime = forms.TimeField(widget=forms.TimeInput(attrs={'class':'form-control','id':'time','type':'time'}))
