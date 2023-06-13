@@ -1,6 +1,6 @@
 # Doctor appointment management system
 
-Automated Weather Classification system that utilizes Transfer Learning techniques. The aim of this project was to develop an efficient and accurate system for classifying weather conditions based on images.
+Our project is a web application that offers several features for patients and doctors. Patients can easily book appointments with doctors, view their blogs, and update their personal details. Doctors, on the other hand, can create dynamic blog posts and manage their personal information. Upon appointment confirmation, a calendar event is automatically created in the doctor's Google Calendar.
 
 # Steps to run a application :
 
@@ -42,6 +42,18 @@ DATABASES = {
 'PASSWORD':'root', ----> replace with your password 
 } }
 
+# Step 2 :
+
+Go to the requirements.txt file location. Go to command prompt and run the following command to install the required packages.
+pip install -r requirements.txt
+
+# Step 3 :
+
+In this project after a appointment confirmation calender event is created in doctor's google calender. If u want this feature
+go to below link and create a account and then create a new project then get a calender api access credentials then paste it in the 
+templates/users/ in the project folder. Otherwise Skip it and remove the code in the views.py in the users folder.
+
+https://console.cloud.google.com/ 
 
 # Step 4 :
 
