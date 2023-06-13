@@ -27,20 +27,20 @@ create database appointmentmanagement;
 
 4. Go to appointment_management folder and open a settings.py file.
 
-Change a user name and password in the database to your username and password of mysql.
+ Change a user name and password in the database to your username and password of mysql.
 
-DATABASES = {
+ DATABASES = {
 
-'default': {
+ 'default': {
 
-'ENGINE': 'django.db.backends.mysql',
+ 'ENGINE': 'django.db.backends.mysql',
 
-'NAME': 'appointment-management',
+ 'NAME': 'appointment-management',
 
-'USER':'root', ----> replace with ur username
+ 'USER':'root', ----> replace with ur username
 
-'PASSWORD':'root', ----> replace with your password 
-} }
+ 'PASSWORD':'root', ----> replace with your password 
+  } }
 
 # Step 2 :
 
