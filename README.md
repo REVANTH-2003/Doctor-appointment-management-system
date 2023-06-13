@@ -45,6 +45,7 @@ create database appointmentmanagement;
 # Step 2 :
 
 Go to the requirements.txt file location. Go to command prompt and run the following command to install the required packages.
+
 pip install -r requirements.txt
 
 # Step 3 :
