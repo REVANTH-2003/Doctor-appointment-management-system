@@ -1,2 +1,2 @@
-# Doctor-appointment-management-system
+# Doctor appointment management system
 
